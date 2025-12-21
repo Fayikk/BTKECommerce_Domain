@@ -18,39 +18,39 @@ namespace BTKECommerce_API.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> GetCategories()
-        {
-            return Ok(_categoryService.GetCategories());
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetCategories()
+        //{
+        //    return Ok(_categoryService.GetCategories());
+        //}
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CategoryDTO model)
         {
-           var categories = _categoryService.CreateCategory(model);
-            return Ok(categories);
+           var isSaveChanges = _categoryService.CreateCategory(model);
+            return Ok(isSaveChanges);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCategory(int Id)
-        {
-            var category = _categoryService.DeleteCategory(Id);
-            return Ok(category);
-        }
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteCategory(int Id)
+        //{
+        //    var category = _categoryService.DeleteCategory(Id);
+        //    return Ok(category);
+        //}
 
-        [HttpPut]   
-        public async Task<IActionResult> UpdateCategory(CategoryModel model)
-        {
-            var category = _categoryService.UpdateCategory(model.Id, model);
-            return Ok(category);
-        }
+        //[HttpPut]   
+        //public async Task<IActionResult> UpdateCategory(CategoryModel model)
+        //{
+        //    var category = _categoryService.UpdateCategory(model.Id, model);
+        //    return Ok(category);
+        //}
 
-        [HttpGet("{Id}")]
-        public async Task<IActionResult> GetCategoryById([FromRoute]int Id)
-        {
-            var category = _categoryService.GetCategoryById(Id);
-            return Ok(category);
-        }
+        //[HttpGet("{Id}")]
+        //public async Task<IActionResult> GetCategoryById([FromRoute]int Id)
+        //{
+        //    var category = _categoryService.GetCategoryById(Id);
+        //    return Ok(category);
+        //}
 
 
 

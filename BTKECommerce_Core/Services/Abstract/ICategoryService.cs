@@ -10,11 +10,13 @@ namespace BTKECommerce_Core.Services.Abstract
 {
     public interface ICategoryService
     {
-        List<CategoryModel> GetCategories();
-        List<CategoryModel> CreateCategory(CategoryDTO model);
-        List<CategoryModel> DeleteCategory(int Id);
-        CategoryModel UpdateCategory(int Id, CategoryModel model);
-        CategoryModel GetCategoryById(int Id);
+        //List<CategoryModel> CreateCategory(CategoryDTO model);
+        bool CreateCategory(CategoryDTO model);
+
+        //List<CategoryModel> GetCategories();
+        //List<CategoryModel> DeleteCategory(int Id);
+        //CategoryModel UpdateCategory(int Id, CategoryModel model);
+        //CategoryModel GetCategoryById(int Id);
 
     }
 }
