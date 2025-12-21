@@ -8,29 +8,6 @@ namespace BTKECommerce_API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public List<CategoryModel> _categories = new List<CategoryModel>() 
-        {
-            new CategoryModel
-            {
-                Name = "Technology",
-                Description = "Technology"
-            },
-            new CategoryModel
-            {
-                Name = "Computer",
-                Description = "Computer"
-            },
-            new CategoryModel
-            {
-                Name = "Phone",
-                Description = "Phone"
-            },
-            new CategoryModel
-            {
-                Name = "Clothes",
-                Description = "Clothes"
-            },
-            };
         public CategoryController()
         {
         }
@@ -58,15 +35,28 @@ namespace BTKECommerce_API.Controllers
             return Ok(_categories);
         }
 
+        [HttpPut("{Id}")]   
+        public async Task<IActionResult> UpdateCategory([FromRoute]int Id,CategoryModel model)
+        {
+            var category = _categories.FirstOrDefault(x => x.Id == Id);
+            category.Name = model.Name;
+            category.Description = model.Description;
+            return Ok(category);
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetCategoryById([FromRoute]int Id)
+        {
+            CategoryModel category = _categories.FirstOrDefault(x => x.Id == Id);
+            return Ok(category);
+        }
+
+
 
     }
 
 
-    public class CategoryModel
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
+  
 
 
 }
