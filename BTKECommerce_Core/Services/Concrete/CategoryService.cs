@@ -25,14 +25,10 @@ namespace BTKECommerce_Core.Services.Concrete
 
         public bool CreateCategory(CategoryDTO model)
         {
-            var objDTO = _mapper.Map<Category>(model);
-            _context.Categories.Add(objDTO);
-            if (_context.SaveChanges() > 0)
-            {
-                return true;
-            }
-            return false;
+            throw new NotImplementedException();
         }
+
+
 
         //public List<CategoryModel> DeleteCategory(int Id)
         //{
