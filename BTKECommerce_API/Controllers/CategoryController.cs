@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BTKECommerce_Core.DTOs.Category;
+using BTKECommerce_Core.Models;
+using BTKECommerce_Core.Services.Abstract;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 
@@ -8,46 +11,44 @@ namespace BTKECommerce_API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public CategoryController()
+        private readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService)
         {
+            _categoryService = categoryService;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            return Ok(_categories);
+            return Ok(_categoryService.GetCategories());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CategoryModel model)
+        public async Task<IActionResult> CreateCategory(CategoryDTO model)
         {
-            _categories.Add(model);
-
-            return Ok(_categories);
+           var categories = _categoryService.CreateCategory(model);
+            return Ok(categories);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteCategory(string name)
+        public async Task<IActionResult> DeleteCategory(int Id)
         {
-            var category = _categories.FirstOrDefault(x => x.Name == name);
-            _categories.Remove(category);
-            return Ok(_categories);
+            var category = _categoryService.DeleteCategory(Id);
+            return Ok(category);
         }
 
-        [HttpPut("{Id}")]   
-        public async Task<IActionResult> UpdateCategory([FromRoute]int Id,CategoryModel model)
+        [HttpPut]   
+        public async Task<IActionResult> UpdateCategory(CategoryModel model)
         {
-            var category = _categories.FirstOrDefault(x => x.Id == Id);
-            category.Name = model.Name;
-            category.Description = model.Description;
+            var category = _categoryService.UpdateCategory(model.Id, model);
             return Ok(category);
         }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetCategoryById([FromRoute]int Id)
         {
-            CategoryModel category = _categories.FirstOrDefault(x => x.Id == Id);
+            var category = _categoryService.GetCategoryById(Id);
             return Ok(category);
         }
 

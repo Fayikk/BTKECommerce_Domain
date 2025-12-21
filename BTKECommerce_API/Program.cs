@@ -1,4 +1,6 @@
 using BTKECommerce_Core.Mapper;
+using BTKECommerce_Core.Services.Abstract;
+using BTKECommerce_Core.Services.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +18,11 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<MappingProfile>();
 });
 #endregion
+#region DI
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+#endregion
 
 
-
-    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

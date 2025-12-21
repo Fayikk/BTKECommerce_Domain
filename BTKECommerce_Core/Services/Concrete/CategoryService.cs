@@ -1,4 +1,6 @@
-﻿using BTKECommerce_Core.Models;
+﻿using AutoMapper;
+using BTKECommerce_Core.DTOs.Category;
+using BTKECommerce_Core.Models;
 using BTKECommerce_Core.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -17,36 +19,38 @@ namespace BTKECommerce_Core.Services.Concrete
             new CategoryModel
             {
                 Id = 1,
-                Name = "Technology",
+                CategoryName = "Technology",
                 Description = "Technology"
             },
             new CategoryModel
             {
                 Id = 2,
-                Name = "Computer",
+                CategoryName = "Computer",
                 Description = "Computer"
             },
             new CategoryModel
             {
                 Id = 3,
-                Name = "Phone",
+                CategoryName = "Phone",
                 Description = "Phone"
             },
             new CategoryModel
             {
                 Id = 4,
-                Name = "Clothes",
+                CategoryName = "Clothes",
                 Description = "Clothes"
             },
             };
-
-        public CategoryService()
+        private readonly IMapper _mapper;
+        public CategoryService(IMapper mapper)
         {
+            _mapper = mapper;
         }
 
-        public List<CategoryModel> CreateCategory(CategoryModel model)
+        public List<CategoryModel> CreateCategory(CategoryDTO model)
         {
-            _categories.Add(model);
+            var objDTO = _mapper.Map<CategoryModel>(model);
+            _categories.Add(objDTO);
             return _categories;
         }
 
@@ -72,7 +76,7 @@ namespace BTKECommerce_Core.Services.Concrete
         {
             CategoryModel category = _categories.FirstOrDefault(x => x.Id == Id);
             category.Description = model.Description;
-            category.Name = model.Name;
+            category.CategoryName = model.CategoryName;
             return category;
         }
     }
