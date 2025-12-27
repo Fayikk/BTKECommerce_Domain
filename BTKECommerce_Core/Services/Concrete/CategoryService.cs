@@ -4,11 +4,6 @@ using BTKECommerce_Core.Models;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Domain.Data;
 using BTKECommerce_Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
@@ -24,6 +19,32 @@ namespace BTKECommerce_Core.Services.Concrete
         }
 
         public bool CreateCategory(CategoryDTO model)
+        {
+            var objDTO = _mapper.Map<Category>(model);
+            _context.Categories.Add(objDTO);
+            if(_context.SaveChanges() > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public List<CategoryModel> DeleteCategory(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CategoryModel> GetCategories()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CategoryModel GetCategoryById(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CategoryModel UpdateCategory(int Id, CategoryModel model)
         {
             throw new NotImplementedException();
         }

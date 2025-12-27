@@ -13,10 +13,11 @@ namespace BTKECommerce_Core.Services.Abstract
         //List<CategoryModel> CreateCategory(CategoryDTO model);
         bool CreateCategory(CategoryDTO model);
 
-        //List<CategoryModel> GetCategories();
-        //List<CategoryModel> DeleteCategory(int Id);
-        //CategoryModel UpdateCategory(int Id, CategoryModel model);
-        //CategoryModel GetCategoryById(int Id);
+        List<CategoryModel> GetCategories();
+        List<CategoryModel> DeleteCategory(int Id);
+        CategoryModel UpdateCategory(int Id, CategoryModel model);
+        CategoryModel GetCategoryById(int Id);
+
 
     }
 }
