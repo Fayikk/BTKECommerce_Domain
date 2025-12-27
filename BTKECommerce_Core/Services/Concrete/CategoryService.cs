@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BTKECommerce_Core.Constants;
 using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Domain.Data;
@@ -27,14 +28,14 @@ namespace BTKECommerce_Core.Services.Concrete
             if(_context.SaveChanges() > 0)
             {
                 response.Data = true;
-                response.Message = "Kategori başarıyla eklendi.";
+                response.Message = Messages.SuccessCreateCategory;
                 response.Success = true;
                 return response;
             }
             return new BaseResponseModel<bool>
             {
                 Data = false,
-                Message = "Kategori eklenirken bir hata oluştu.",
+                Message = Messages.FailCreateCategory,
                 Success = false
             };
         }
@@ -47,13 +48,21 @@ namespace BTKECommerce_Core.Services.Concrete
                 var obj = _context.Categories.FirstOrDefault(x => x.Id == Id);
                 _context.Categories.Remove(obj);
                 _context.SaveChanges();
-                return true;
+                return new BaseResponseModel<bool>
+                {
+                    Data = true,
+                    Success = true
+                };
             }
             catch (Exception ex)
             {
                 // Log the exception (ex) as neede
                 Console.WriteLine(ex.Message);
-                return false;
+                return new BaseResponseModel<bool>
+                {
+                    Data = false,
+                    Success = false
+                };
             }
 
             
@@ -61,16 +70,21 @@ namespace BTKECommerce_Core.Services.Concrete
 
         public BaseResponseModel<List<Category>> GetCategories()
         {
-            return _context.Categories.ToList();
+            return new BaseResponseModel<List<Category>> {
+                Data = _context.Categories.ToList(),
+            };
         }
 
         public BaseResponseModel<Category> GetCategoryById(Guid Id)
         {
 
             //Önce parametreden gelen id'yi için Categories tablosundaki eşleşen kaydı bulacağız.
-            Category category = _context.Categories.Find(Id);
+         
             //Bulduğumuz kaydı döneceğiz.
-            return category;
+            return new BaseResponseModel<Category>
+            {
+                Data = _context.Categories.Find(Id)
+            };
 
         }
 
@@ -86,9 +100,19 @@ namespace BTKECommerce_Core.Services.Concrete
             if (_context.SaveChanges() > 0)
             {
                 //güncellenen kategoriyi döneceğiz.
-                return category;
+                return new BaseResponseModel<Category>
+                {
+                    Data = category,
+                    Message = Messages.SaveChangesSuccess,
+                    Success = true
+                };
             }
-            return null;
+            return new BaseResponseModel<Category>
+            {
+                Data = null,
+                Success = false,
+                Message = Messages.SaveChangesFail
+            };
 
         }
 
