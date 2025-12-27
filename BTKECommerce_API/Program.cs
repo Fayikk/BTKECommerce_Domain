@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(BaseResponseModel<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 #region Db Connection
 builder.Services.AddDbContext<ApplicationDbContext>(opt => 
