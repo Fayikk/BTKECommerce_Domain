@@ -2,7 +2,9 @@ using BTKECommerce_Core.Mapper;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Core.Services.Concrete;
 using BTKECommerce_Domain.Data;
+using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
+using BTKECommerce_Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(BaseResponseModel<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
 #region Db Connection

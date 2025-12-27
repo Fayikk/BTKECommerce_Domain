@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BTKECommerce_Domain\BTKECommerce_Domain.csproj" />
+  </ItemGroup>
+
 </Project>
