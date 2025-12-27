@@ -1,5 +1,7 @@
 ﻿using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.Models;
+using BTKECommerce_Domain.Entities;
+using BTKECommerce_Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +12,10 @@ namespace BTKECommerce_Core.Services.Abstract
 {
     public interface ICategoryService
     {
-        //List<CategoryModel> CreateCategory(CategoryDTO model);
-        bool CreateCategory(CategoryDTO model);
-
-        List<CategoryModel> GetCategories();
-        List<CategoryModel> DeleteCategory(int Id);
-        CategoryModel UpdateCategory(int Id, CategoryModel model);
-        CategoryModel GetCategoryById(int Id);
-
-
+        BaseResponseModel<bool> CreateCategory(CategoryDTO model);
+        BaseResponseModel<bool> DeleteCategory(Guid Id);
+        BaseResponseModel<List<Category>> GetCategories();
+        BaseResponseModel<Category> GetCategoryById(Guid Id);
+        BaseResponseModel<Category> UpdateCategory(Guid Id, CategoryDTO model);
     }
 }

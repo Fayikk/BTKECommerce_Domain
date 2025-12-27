@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BTKECommerce_Domain\BTKECommerce_Domain.csproj" />
+    <ProjectReference Include="..\BTKECommerce_Infrastructure\BTKECommerce_Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

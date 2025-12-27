@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using BTKECommerce_Core.DTOs.Category;
-using BTKECommerce_Core.Models;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Domain.Data;
 using BTKECommerce_Domain.Entities;
+using BTKECommerce_Infrastructure.Models;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
@@ -12,69 +12,87 @@ namespace BTKECommerce_Core.Services.Concrete
 
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+       
         public CategoryService(IMapper mapper,ApplicationDbContext context)
         {
             _context = context; 
             _mapper = mapper;
         }
 
-        public bool CreateCategory(CategoryDTO model)
+        public BaseResponseModel<bool> CreateCategory(CategoryDTO model)
         {
+            BaseResponseModel<bool> response = new BaseResponseModel<bool>();
             var objDTO = _mapper.Map<Category>(model);
             _context.Categories.Add(objDTO);
             if(_context.SaveChanges() > 0)
             {
+                response.Data = true;
+                response.Message = "Kategori başarıyla eklendi.";
+                response.Success = true;
+                return response;
+            }
+            return new BaseResponseModel<bool>
+            {
+                Data = false,
+                Message = "Kategori eklenirken bir hata oluştu.",
+                Success = false
+            };
+        }
+
+        public BaseResponseModel<bool> DeleteCategory(Guid Id)
+        {
+
+            try
+            {
+                var obj = _context.Categories.FirstOrDefault(x => x.Id == Id);
+                _context.Categories.Remove(obj);
+                _context.SaveChanges();
                 return true;
             }
-            return false;
+            catch (Exception ex)
+            {
+                // Log the exception (ex) as neede
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+            
         }
 
-        public List<CategoryModel> DeleteCategory(int Id)
+        public BaseResponseModel<List<Category>> GetCategories()
         {
-            throw new NotImplementedException();
+            return _context.Categories.ToList();
         }
 
-        public List<CategoryModel> GetCategories()
+        public BaseResponseModel<Category> GetCategoryById(Guid Id)
         {
-            throw new NotImplementedException();
+
+            //Önce parametreden gelen id'yi için Categories tablosundaki eşleşen kaydı bulacağız.
+            Category category = _context.Categories.Find(Id);
+            //Bulduğumuz kaydı döneceğiz.
+            return category;
+
         }
 
-        public CategoryModel GetCategoryById(int Id)
+        public BaseResponseModel<Category> UpdateCategory(Guid Id, CategoryDTO model)
         {
-            throw new NotImplementedException();
+            //Önce parametreden gelen id'yi için Categories tablosundaki eşleşen kaydı bulacağız.
+            Category category = _context.Categories.Find(Id);
+            //mevcut verileri parametreden gelen güncel veriler ile güncelleyeceğiz.
+            _mapper.Map(model, category);
+            //context'e güncel nesneyi kaydedeceğiz.
+            _context.Categories.Update(category);
+            //veritabanına değişiklikleri kaydedeceğiz.
+            if (_context.SaveChanges() > 0)
+            {
+                //güncellenen kategoriyi döneceğiz.
+                return category;
+            }
+            return null;
+
         }
 
-        public CategoryModel UpdateCategory(int Id, CategoryModel model)
-        {
-            throw new NotImplementedException();
-        }
 
 
-
-        //public List<CategoryModel> DeleteCategory(int Id)
-        //{
-        //    var category = _categories.FirstOrDefault(x => x.Id == Id);
-        //    _categories.Remove(category);
-        //    return _categories;
-        //}
-
-        //public List<CategoryModel> GetCategories()
-        //{
-        //    return _categories;
-        //}
-
-        //public CategoryModel GetCategoryById(int Id)
-        //{
-        //    var category = _categories.FirstOrDefault(x => x.Id == Id);
-        //    return category;
-        //}
-
-        //public CategoryModel UpdateCategory(int Id, CategoryModel model)
-        //{
-        //    CategoryModel category = _categories.FirstOrDefault(x => x.Id == Id);
-        //    category.Description = model.Description;
-        //    category.CategoryName = model.CategoryName;
-        //    return category;
-        //}
     }
 }
