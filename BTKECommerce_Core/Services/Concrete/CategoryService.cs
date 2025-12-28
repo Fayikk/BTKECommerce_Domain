@@ -8,6 +8,7 @@ using BTKECommerce_Domain.Entities;
 using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.UoW;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace BTKECommerce_Core.Services.Concrete
@@ -17,8 +18,10 @@ namespace BTKECommerce_Core.Services.Concrete
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryService(IMapper mapper,IUnitOfWork unitOfWork)
+        private readonly IValidator<CategoryDTO> _validator;
+        public CategoryService(IMapper mapper,IUnitOfWork unitOfWork, IValidator<CategoryDTO> _validator)
         {
+            this._validator = _validator;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -26,6 +29,19 @@ namespace BTKECommerce_Core.Services.Concrete
         public async Task<BaseResponseModel<bool>> CreateCategory(CategoryDTO model)
         {
             BaseResponseModel<bool> response = new BaseResponseModel<bool>();
+            List<string> errorMessages = new();
+            var result = _validator.Validate(model);
+            if (!result.IsValid)
+            {
+                //var errors = result.Errors.ForEach(x => x.ErrorMessage);
+                response.Data = false;
+                response.Message = Messages.FailCreateCategory;
+                response.Success = false;
+                errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+                response.ErrorMessages = errorMessages;
+                return response;
+            }
+
             var objDTO = _mapper.Map<Category>(model);
             _unitOfWork.Categories.Add(objDTO);
             if(await _unitOfWork.SaveChangesAsync() > 0)
