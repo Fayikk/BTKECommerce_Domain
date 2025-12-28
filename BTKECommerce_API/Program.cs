@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(BaseResponseModel<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 #region Db Connection
 builder.Services.AddDbContext<ApplicationDbContext>(opt => 
