@@ -6,6 +6,7 @@ using BTKECommerce_Domain.Data;
 using BTKECommerce_Domain.Entities;
 using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
@@ -78,6 +79,22 @@ namespace BTKECommerce_Core.Services.Concrete
                 Data = await categoryRepository.GetById(Id)
             };
 
+        }
+
+        public async Task<BaseResponseModel<List<Category>>> GetProductsByCategory()
+        {
+            BaseResponseModel<List<Category>> response = new BaseResponseModel<List<Category>>();
+            //var categories = result.Where(x => x.Id == Id).ToList();
+            if (result.Count() > 0)
+            {
+                response.Data = result.ToList();
+                response.Success = true;
+                return response;
+            }
+            response.Data = new List<Category>();
+            response.Success = true;
+            response.Message = Messages.NoDataFound;
+            return response;
         }
 
         public async Task<BaseResponseModel<Category>> UpdateCategory(Guid Id, CategoryDTO model)

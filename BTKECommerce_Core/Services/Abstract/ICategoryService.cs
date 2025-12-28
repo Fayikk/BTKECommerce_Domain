@@ -16,5 +16,6 @@ namespace BTKECommerce_Core.Services.Abstract
         Task<BaseResponseModel<List<Category>>> GetCategories();
         Task<BaseResponseModel<Category>> GetCategoryById(Guid Id);
         Task<BaseResponseModel<Category>> UpdateCategory(Guid Id, CategoryDTO model);
+        Task<BaseResponseModel<List<Category>>> GetProductsByCategory();
     }
 }

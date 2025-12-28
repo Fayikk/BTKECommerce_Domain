@@ -2,6 +2,7 @@
 using BTKECommerce_Domain.Entities.Base;
 using BTKECommerce_Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BTKECommerce_Infrastructure.Repository
 {
@@ -31,6 +32,16 @@ namespace BTKECommerce_Infrastructure.Repository
         public async Task<IEnumerable<T>> GetAll()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsyncWithInclude(Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpressions)
+        {
+            IQueryable<T> query = _dbSet.AsQueryable();
+            if(includeExpressions != null)
+            {
+                query = includeExpressions(query);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<T> GetById(Guid Id)

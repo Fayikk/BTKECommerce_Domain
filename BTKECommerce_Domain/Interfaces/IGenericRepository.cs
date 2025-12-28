@@ -1,4 +1,5 @@
 ﻿using BTKECommerce_Domain.Entities.Base;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BTKECommerce_Domain.Interfaces
 {
@@ -11,6 +12,7 @@ namespace BTKECommerce_Domain.Interfaces
         //Update
         //GetAll
         Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAllAsyncWithInclude(Func<IQueryable<T>,IIncludableQueryable<T,object>> includeExpressions);
         //Get
         Task<T> GetById(Guid Id);
         T Update(T entity);

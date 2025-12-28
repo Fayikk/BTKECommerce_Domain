@@ -20,7 +20,7 @@ namespace BTKECommerce_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            return Ok(_categoryService.GetCategories());
+            return Ok(await _categoryService.GetProductsByCategory());
         }
 
         [HttpPost]
@@ -51,7 +51,7 @@ namespace BTKECommerce_API.Controllers
             return Ok(category);
         }
 
-
+      
 
     }
 

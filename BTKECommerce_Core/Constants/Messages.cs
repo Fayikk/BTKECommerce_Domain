@@ -13,5 +13,10 @@ namespace BTKECommerce_Core.Constants
         
         public static string SaveChangesSuccess = "Değişiklikler Kaydedildi";
         public static string SaveChangesFail = "Güncelleme İşlemi Yapılırken Bir Hata Oluştu.";
+
+        public static string SuccessCreateProduct = "Ürün başarıyla eklendi.";
+        public static string FailCreateProduct = "Ürün eklenirken bir hata oluştu.";
+
+        public static string NoDataFound = "No data found.";
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BTKECommerce_Domain.Entities
@@ -18,6 +19,7 @@ namespace BTKECommerce_Domain.Entities
         [Column(TypeName = "decimal(18,6)")]
         public decimal Price { get; set; }
         public Guid CategoryId { get; set; }
+        [JsonIgnore]
         public Category Category { get; set; }
     }
 
