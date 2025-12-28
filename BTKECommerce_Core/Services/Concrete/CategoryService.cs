@@ -84,6 +84,7 @@ namespace BTKECommerce_Core.Services.Concrete
         public async Task<BaseResponseModel<List<Category>>> GetProductsByCategory()
         {
             BaseResponseModel<List<Category>> response = new BaseResponseModel<List<Category>>();
+            var result = await categoryRepository.GetAllAsyncWithInclude(x => x.Include(x => x.Products));
             //var categories = result.Where(x => x.Id == Id).ToList();
             if (result.Count() > 0)
             {
