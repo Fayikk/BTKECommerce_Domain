@@ -5,29 +5,37 @@ using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Domain.Entities;
 using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
+using BTKECommerce_Infrastructure.UoW;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
     public class ProductService : IProductService
     {
         private readonly IMapper _mapper;
-        private readonly IProductRepository _productRepository;
-        public ProductService(IMapper mapper,IProductRepository productRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public ProductService(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public BaseResponseModel<bool> CreateProduct(ProductDTO model)
+        public async Task<BaseResponseModel<bool>> CreateProduct(ProductDTO model)
         {
             BaseResponseModel<bool> response = new();
             try
             {
                 var obj = _mapper.Map<Product>(model);
-                _productRepository.Add(obj);
-                response.Message = Messages.SuccessCreateProduct;
-                response.Data = true;
-                response.Success = true;
+                _unitOfWork.Products.Add(obj);
+                if(await _unitOfWork.SaveChangesAsync() > 0)
+                {
+                    response.Message = Messages.SuccessCreateProduct;
+                    response.Data = true;
+                    response.Success = true;
+                    return response;
+                }
+                response.Message = Messages.FailCreateProduct;
+                response.Data = false;
+                response.Success = false;
                 return response;
             }
             catch (Exception ex)

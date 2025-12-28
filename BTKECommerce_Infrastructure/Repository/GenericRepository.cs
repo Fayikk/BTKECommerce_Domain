@@ -19,14 +19,12 @@ namespace BTKECommerce_Infrastructure.Repository
         public void Add(T entity)
         {
             _dbSet.Add(entity);
-            _context.SaveChanges();
             
         }
 
         public void Delete(T entity)
         {
             _dbSet.Remove(entity);
-            _context.SaveChanges();
         }
 
         public async Task<IEnumerable<T>> GetAll()
@@ -53,7 +51,6 @@ namespace BTKECommerce_Infrastructure.Repository
         public T Update(T entity)
         {
             _dbSet.Update(entity);
-            _context.SaveChanges();
             return entity;
         }
     }

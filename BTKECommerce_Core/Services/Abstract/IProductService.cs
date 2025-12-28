@@ -11,7 +11,7 @@ namespace BTKECommerce_Core.Services.Abstract
 {
     public interface IProductService
     {
-        BaseResponseModel<bool> CreateProduct(ProductDTO model);
+        Task<BaseResponseModel<bool>> CreateProduct(ProductDTO model);
 
     }
 }

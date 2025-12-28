@@ -11,7 +11,7 @@ namespace BTKECommerce_Core.Services.Abstract
 {
     public interface ICategoryService
     {
-        BaseResponseModel<bool> CreateCategory(CategoryDTO model);
+        Task<BaseResponseModel<bool>> CreateCategory(CategoryDTO model);
         Task<BaseResponseModel<bool>> DeleteCategory(Guid Id);
         Task<BaseResponseModel<List<Category>>> GetCategories();
         Task<BaseResponseModel<Category>> GetCategoryById(Guid Id);

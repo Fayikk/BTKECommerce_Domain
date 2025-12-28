@@ -26,7 +26,7 @@ namespace BTKECommerce_API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CategoryDTO model)
         {
-           var isSaveChanges = _categoryService.CreateCategory(model);
+           var isSaveChanges = await _categoryService.CreateCategory(model);
             return Ok(isSaveChanges);
         }
 
