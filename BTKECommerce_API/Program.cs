@@ -6,6 +6,7 @@ using BTKECommerce_Core.Services.Concrete;
 using BTKECommerce_Domain.Data;
 using BTKECommerce_Domain.Entities;
 using BTKECommerce_Domain.Interfaces;
+using BTKECommerce_Infrastructure.Extensions.Token;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.Repository;
 using BTKECommerce_Infrastructure.UoW;
@@ -56,6 +57,8 @@ builder.Services.AddAutoMapper(cfg =>
 #region DI
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 #endregion
 
 

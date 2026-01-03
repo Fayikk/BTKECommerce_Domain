@@ -1,5 +1,6 @@
 ﻿using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ namespace BTKECommerce_API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateCategory(CategoryDTO model)
         {
            var isSaveChanges = await _categoryService.CreateCategory(model);
