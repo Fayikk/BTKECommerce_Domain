@@ -4,11 +4,13 @@ using BTKECommerce_Core.Mapper;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Core.Services.Concrete;
 using BTKECommerce_Domain.Data;
+using BTKECommerce_Domain.Entities;
 using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.Repository;
 using BTKECommerce_Infrastructure.UoW;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,16 @@ opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 #endregion
 
 
+#region Identity Configuration
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+#endregion
 
 
 
@@ -49,12 +61,67 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    string[] roles = { "Admin", "User" };
+
+    foreach(var role in roles)
+    {
+        if(!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    var adminEmail = "admin@btkcommerce.com";
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if(adminUser == null)
+    {
+        var newAdminUser = new ApplicationUser
+        {
+            UserName = "admin",
+            Email = adminEmail,
+            FirstName = "System",
+            LastName = "Administrator"
+        };
+
+        var createAdminResult = await userManager.CreateAsync(newAdminUser, "Admin123!");
+        if (createAdminResult.Succeeded)
+        {
+            await userManager.AddToRoleAsync(newAdminUser, "Admin");
+        }
+
+    }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
 app.UseHttpsRedirection();
 

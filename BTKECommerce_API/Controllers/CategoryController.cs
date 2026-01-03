@@ -1,6 +1,7 @@
 ﻿using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.Services.Abstract;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 
@@ -11,6 +12,7 @@ namespace BTKECommerce_API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+     
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
