@@ -90,11 +90,7 @@ namespace BTKECommerce_Core.Services.Concrete
             {
                 // Log the exception (ex) as neede
                 Console.WriteLine(ex.Message);
-                return new BaseResponseModel<bool>
-                {
-                    Data = false,
-                    Success = false
-                };
+                throw ex;
             }
         }
 

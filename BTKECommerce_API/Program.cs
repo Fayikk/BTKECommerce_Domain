@@ -1,3 +1,4 @@
+using BTKECommerce_API.Middlewares;
 using BTKECommerce_Core;
 using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.DTOs.Product;
@@ -158,7 +159,7 @@ app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 
 app.Run();

@@ -1,4 +1,5 @@
-﻿using BTKECommerce_Core.Mapper;
+﻿using BTKECommerce_Core.Extensions;
+using BTKECommerce_Core.Mapper;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Core.Services.Concrete;
 using BTKECommerce_Domain.Data;
@@ -36,6 +37,7 @@ namespace BTKECommerce_Core
             });
             #endregion
             #region DI
+            services.AddScoped<ILogService,LogService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IAuthService, AuthService>();
