@@ -21,6 +21,7 @@ namespace BTKECommerce_Core.Services.Concrete
 
         public async Task<BaseResponseModel<bool>> CreateProduct(ProductDTO model)
         {
+
             BaseResponseModel<bool> response = new();
             try
             {

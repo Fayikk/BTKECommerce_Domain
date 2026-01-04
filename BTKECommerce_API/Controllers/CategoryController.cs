@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
 namespace BTKECommerce_API.Controllers
@@ -14,11 +16,13 @@ namespace BTKECommerce_API.Controllers
     {
         private readonly ICategoryService _categoryService;
      
+     
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
+   
 
         [HttpGet]
         public async Task<IActionResult> GetCategories()
@@ -30,7 +34,8 @@ namespace BTKECommerce_API.Controllers
         [Authorize(Roles ="Admin,User")]
         public async Task<IActionResult> CreateCategory(CategoryDTO model)
         {
-           var isSaveChanges = await _categoryService.CreateCategory(model);
+          
+            var isSaveChanges = await _categoryService.CreateCategory(model);
             return Ok(isSaveChanges);
         }
 

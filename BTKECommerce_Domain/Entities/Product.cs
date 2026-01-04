@@ -25,7 +25,7 @@ namespace BTKECommerce_Domain.Entities
 
     /* 
      * 
-     * sad
+     * happy coding :)
      * 
      */
 }

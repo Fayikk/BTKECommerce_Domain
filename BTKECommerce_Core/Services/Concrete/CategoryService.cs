@@ -9,7 +9,9 @@ using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.UoW;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
@@ -19,8 +21,10 @@ namespace BTKECommerce_Core.Services.Concrete
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<CategoryDTO> _validator;
-        public CategoryService(IMapper mapper,IUnitOfWork unitOfWork, IValidator<CategoryDTO> _validator)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public CategoryService(IMapper mapper,IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor,IValidator<CategoryDTO> _validator)
         {
+            _httpContextAccessor = httpContextAccessor;
             this._validator = _validator;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -41,6 +45,8 @@ namespace BTKECommerce_Core.Services.Concrete
                 response.ErrorMessages = errorMessages;
                 return response;
             }
+            string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            model.CreatedBy = userId;
 
             var objDTO = _mapper.Map<Category>(model);
             _unitOfWork.Categories.Add(objDTO);

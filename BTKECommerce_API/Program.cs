@@ -1,11 +1,14 @@
+using BTKECommerce_Core;
 using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.DTOs.Product;
 using BTKECommerce_Core.Mapper;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Core.Services.Concrete;
+using BTKECommerce_Domain;
 using BTKECommerce_Domain.Data;
 using BTKECommerce_Domain.Entities;
 using BTKECommerce_Domain.Interfaces;
+using BTKECommerce_Infrastructure;
 using BTKECommerce_Infrastructure.Extensions.Token;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.Repository;
@@ -13,6 +16,7 @@ using BTKECommerce_Infrastructure.UoW;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -25,16 +29,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped(typeof(BaseResponseModel<>));
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryDTO>();
+builder.Services.AddHttpContextAccessor();
 
-#region Db Connection
-builder.Services.AddDbContext<ApplicationDbContext>(opt => 
-opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-#endregion
 
+builder.Services.AddDomainServices(builder.Configuration);
+builder.Services.AddInfrastructureServices();
+builder.Services.AddCoreServices();
 
 #region Identity Configuration
 builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options =>
@@ -71,15 +74,6 @@ builder.Services.AddAuthentication(opt =>
 });
 
 #endregion
-
-
-
-
-
-
-
-
-
 #region JWT Configuration
 builder.Services.AddSwaggerGen(c =>
 {
@@ -112,23 +106,17 @@ builder.Services.AddSwaggerGen(c =>
 
 #endregion
 
-
-
-
-#region DI AutoMapper
-builder.Services.AddAutoMapper(cfg =>
+#region Rate Limiter
+builder.Services.AddRateLimiter(options =>
 {
-    cfg.AddProfile<MappingProfile>();
+    options.RejectionStatusCode = 429;
+    options.AddFixedWindowLimiter("basic", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 3;
+        limiterOptions.Window = TimeSpan.FromSeconds(10);
+    });
 });
 #endregion
-
-#region DI
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-#endregion
-
 
 var app = builder.Build();
 
@@ -170,23 +158,6 @@ using (var scope = app.Services.CreateScope())
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
@@ -195,6 +166,7 @@ using (var scope = app.Services.CreateScope())
     }
 
 app.UseHttpsRedirection();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 

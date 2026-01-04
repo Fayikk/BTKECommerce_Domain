@@ -4,6 +4,7 @@ using BTKECommerce_Domain.Entities;
 using BTKECommerce_Infrastructure.Extensions.Token;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace BTKECommerce_API.Controllers
 {
@@ -34,6 +35,7 @@ namespace BTKECommerce_API.Controllers
 
 
         [HttpPost("Login")]
+        [EnableRateLimiting("basic")]
         public async Task<IActionResult> SignIn(LoginDTO dto)
         {
             var result = await _authService.Login(dto);
