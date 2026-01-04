@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BTKECommerce_Core\BTKECommerce_Core.csproj" />
-    <ProjectReference Include="..\BTKECommerce_Infrastructure\BTKECommerce_Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

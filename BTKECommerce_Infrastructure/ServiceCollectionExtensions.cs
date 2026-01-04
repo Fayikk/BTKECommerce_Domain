@@ -1,4 +1,5 @@
 ﻿using BTKECommerce_Domain.Interfaces;
+using BTKECommerce_Infrastructure.Extensions.Token;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.Repository;
 using BTKECommerce_Infrastructure.UoW;
@@ -19,7 +20,7 @@ namespace BTKECommerce_Infrastructure
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(BaseResponseModel<>));
-
+            services.AddScoped<ITokenService, TokenService>();
             // Add infrastructure services here
             return services;
         }

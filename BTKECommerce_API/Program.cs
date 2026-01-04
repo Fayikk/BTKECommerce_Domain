@@ -39,17 +39,6 @@ builder.Services.AddDomainServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreServices();
 
-#region Identity Configuration
-builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options =>
-{
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 6;
-}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-#endregion
-
 
 
 #region Jwt Header Configuration

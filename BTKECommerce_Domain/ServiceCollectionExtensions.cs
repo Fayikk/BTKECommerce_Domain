@@ -16,6 +16,10 @@ namespace BTKECommerce_Domain
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services,IConfiguration configuration)
         {
+
+           
+
+
             #region Db Connection
             services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
