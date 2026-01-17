@@ -108,6 +108,14 @@ builder.Services.AddRateLimiter(options =>
 });
 #endregion
 
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.WithOrigins("http://localhost:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader().AllowCredentials();
+}));
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -161,5 +169,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
-
+app.UseCors("MyPolicy");
 app.Run();

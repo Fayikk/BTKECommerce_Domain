@@ -47,5 +47,19 @@ namespace BTKECommerce_Core.Services.Concrete
                 return response;
             }
         }
+
+        public async Task<BaseResponseModel<IEnumerable<ProductDTO>>> GetProducts(Guid categoryId)
+        {
+
+            BaseResponseModel<IEnumerable<ProductDTO>> responseModel = new();
+            var products = await _unitOfWork.Products.GetAllAsyncExpression(
+                predicate: p => p.CategoryId == categoryId, null
+                );
+            var productDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            responseModel.Success = true;
+            responseModel.Message = "Products Retrieved Succesfully";
+            responseModel.Data = productDTO;
+            return responseModel;
+        }
     }
 }
