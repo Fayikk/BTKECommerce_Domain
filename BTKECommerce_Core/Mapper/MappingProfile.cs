@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.DTOs.Product;
+using BTKECommerce_Core.DTOs.ProductImage;
 using BTKECommerce_Domain.Entities;
 
 namespace BTKECommerce_Core.Mapper
@@ -17,7 +18,9 @@ namespace BTKECommerce_Core.Mapper
             CreateMap<CategoryDTO,Category>().ReverseMap();
             #endregion
 
-
+            #region ProductImage
+            CreateMap<ProductImage,ProductImageDTO>().ReverseMap();
+            #endregion
 
         }
     }

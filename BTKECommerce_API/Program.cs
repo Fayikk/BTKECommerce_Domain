@@ -170,4 +170,5 @@ app.UseAuthorization();
 app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 app.UseCors("MyPolicy");
+app.UseStaticFiles();
 app.Run();

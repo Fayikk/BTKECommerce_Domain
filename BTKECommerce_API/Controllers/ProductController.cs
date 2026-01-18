@@ -1,4 +1,5 @@
 ﻿using BTKECommerce_Core.DTOs.Product;
+using BTKECommerce_Core.DTOs.ProductImage;
 using BTKECommerce_Core.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,13 @@ namespace BTKECommerce_API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("{id}/images")]
+        public async Task<IActionResult> AddProductImage(Guid id, [FromForm]AddProductImageDTO imageDto)
+        {
+            var result = await _productService.AddProductImage(id, imageDto);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
 
     }
 }

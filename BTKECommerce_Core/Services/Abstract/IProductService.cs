@@ -1,5 +1,6 @@
 ﻿using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.DTOs.Product;
+using BTKECommerce_Core.DTOs.ProductImage;
 using BTKECommerce_Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace BTKECommerce_Core.Services.Abstract
     {
         Task<BaseResponseModel<bool>> CreateProduct(ProductDTO model);
         Task<BaseResponseModel<IEnumerable<ProductDTO>>> GetProducts(Guid categoryId);
+        Task<BaseResponseModel<ProductImageDTO>> AddProductImage(Guid Id,AddProductImageDTO productImageDTO);
 
     }
 }

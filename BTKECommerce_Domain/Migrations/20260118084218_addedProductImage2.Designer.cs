@@ -4,6 +4,7 @@ using BTKECommerce_Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTKECommerce_Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260118084218_addedProductImage2")]
+    partial class addedProductImage2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,6 +185,9 @@ namespace BTKECommerce_Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -195,6 +201,8 @@ namespace BTKECommerce_Domain.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Products");
                 });
@@ -366,13 +374,17 @@ namespace BTKECommerce_Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BTKECommerce_Domain.Entities.Product", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ProductId");
+
                     b.Navigation("Category");
                 });
 
             modelBuilder.Entity("BTKECommerce_Domain.Entities.ProductImage", b =>
                 {
                     b.HasOne("BTKECommerce_Domain.Entities.Product", "Product")
-                        .WithMany("ProductImages")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -438,7 +450,7 @@ namespace BTKECommerce_Domain.Migrations
 
             modelBuilder.Entity("BTKECommerce_Domain.Entities.Product", b =>
                 {
-                    b.Navigation("ProductImages");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
