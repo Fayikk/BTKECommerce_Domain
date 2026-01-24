@@ -4,6 +4,7 @@ using BTKECommerce_Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTKECommerce_Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260124044538_testField")]
+    partial class testField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,59 +131,6 @@ namespace BTKECommerce_Domain.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("BTKECommerce_Domain.Entities.Basket", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Baskets");
-                });
-
-            modelBuilder.Entity("BTKECommerce_Domain.Entities.BasketItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BasketId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BasketId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("BTKECommerce_Domain.Entities.Category", b =>
@@ -414,36 +364,6 @@ namespace BTKECommerce_Domain.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BTKECommerce_Domain.Entities.Basket", b =>
-                {
-                    b.HasOne("BTKECommerce_Domain.Entities.ApplicationUser", "User")
-                        .WithMany("Baskets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BTKECommerce_Domain.Entities.BasketItem", b =>
-                {
-                    b.HasOne("BTKECommerce_Domain.Entities.Basket", "Basket")
-                        .WithMany("Items")
-                        .HasForeignKey("BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BTKECommerce_Domain.Entities.Product", "Product")
-                        .WithMany("BasketItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Basket");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("BTKECommerce_Domain.Entities.Product", b =>
                 {
                     b.HasOne("BTKECommerce_Domain.Entities.Category", "Category")
@@ -517,16 +437,6 @@ namespace BTKECommerce_Domain.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BTKECommerce_Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("Baskets");
-                });
-
-            modelBuilder.Entity("BTKECommerce_Domain.Entities.Basket", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("BTKECommerce_Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -534,8 +444,6 @@ namespace BTKECommerce_Domain.Migrations
 
             modelBuilder.Entity("BTKECommerce_Domain.Entities.Product", b =>
                 {
-                    b.Navigation("BasketItems");
-
                     b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618

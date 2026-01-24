@@ -13,6 +13,8 @@ namespace BTKECommerce_Infrastructure.UoW
         IGenericRepository<Category> Categories { get; }
         IGenericRepository<Product> Products { get; }
         IGenericRepository<ProductImage> ProductImages { get; }
+        IGenericRepository<Basket> Baskets { get; }
+        IGenericRepository<BasketItem> BasketItems { get; }
 
         Task<int> SaveChangesAsync();
     }
