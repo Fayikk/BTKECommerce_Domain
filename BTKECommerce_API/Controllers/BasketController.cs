@@ -1,7 +1,9 @@
 ﻿using BTKECommerce_Core.DTOs.Basket;
 using BTKECommerce_Core.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BTKECommerce_API.Controllers
 {
@@ -20,6 +22,15 @@ namespace BTKECommerce_API.Controllers
         {
             var result = await _basketService.AddToBasket(dto);
             return Ok(result);  
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetBasketByUser()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var result = await _basketService.GetBasketItemByUserId(userId);
+            return Ok(result);
         }
     }
 }

@@ -11,6 +11,6 @@ namespace BTKECommerce_Core.Services.Abstract
     public interface IBasketService
     {
         Task<bool> AddToBasket(BasketDTO dto);
-        //Task<BaseResponseModel<BasketResponseDTO>> GetBasketItemByUserId(string userId);
+        Task<BaseResponseModel<BasketResponseDTO>> GetBasketItemByUserId(string userId);
     }
 }

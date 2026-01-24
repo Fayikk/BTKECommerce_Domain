@@ -2,6 +2,7 @@
 using BTKECommerce_Core.DTOs.Basket;
 using BTKECommerce_Core.Services.Abstract;
 using BTKECommerce_Domain.Entities;
+using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.UoW;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -61,6 +62,31 @@ namespace BTKECommerce_Core.Services.Concrete
                 return true;
             }
             return false;
+        }
+
+        public async Task<BaseResponseModel<BasketResponseDTO>> GetBasketItemByUserId(string userId)
+        {
+            var userBasket = await _unitOfWork.Baskets.GetAllExpression(
+                predicate: x => x.UserId == userId,
+                includeExpressions: x => x.Include(x => x.Items)
+                );
+            if(userBasket == null)
+            {
+                return new BaseResponseModel<BasketResponseDTO>
+                {
+                    Data = null,
+                    Success = false,
+                };
+            }
+
+            var objDTO = _mapper.Map<BasketResponseDTO>(userBasket);
+            return new BaseResponseModel<BasketResponseDTO>
+            {
+                Data = objDTO,
+                Success = true,
+            };
+        
+        
         }
     }
 }
