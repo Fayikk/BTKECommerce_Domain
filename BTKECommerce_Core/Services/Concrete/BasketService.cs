@@ -36,14 +36,15 @@ namespace BTKECommerce_Core.Services.Concrete
                 Basket basketObj = new()
                 {
                     UserId = basketDTO.UserId,
-                    Items = new List<BasketItem>
-                        {
+                    Items = new List<BasketItem> 
+                    {
                             new BasketItem
                             {
                                 ProductId = basketDTO.ProductId,
                                 Quantity = basketDTO.Quantity
                             }
                         }
+
                 };
                 _unitOfWork.Baskets.Add(basketObj);
             }else
@@ -75,7 +76,7 @@ namespace BTKECommerce_Core.Services.Concrete
         {
             var userBasket = await _unitOfWork.Baskets.GetAllExpression(
                 predicate: x => x.UserId == userId,
-                includeExpressions: x => x.Include(x => x.Items)
+                includeExpressions: x => x.Include(x => x.Items).ThenInclude(x => x.Product).ThenInclude(x => x.ProductImages)
                 );
             if(userBasket == null)
             {
